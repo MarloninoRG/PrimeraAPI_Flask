@@ -2,10 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from .config import DevelopmentConfig
-
-# Crear la instancia de SQLAlchemy
-# ORM convierte las tablas de la base de datos en clases de Python
-db = SQLAlchemy()
+from .routes import main_bp
+from .routes.estudiantes import estudiantes_bp
+from .extensions import db
 
 def create_app(config_class=DevelopmentConfig):
     """Función de fábrica para crear la aplicación Flask"""
@@ -23,7 +22,7 @@ def create_app(config_class=DevelopmentConfig):
     CORS(app)
     
     # Importar y registrar los blueprints (rutas) de la aplicación
-    from .routes import main_bp
     app.register_blueprint(main_bp)
-        
+    app.register_blueprint(estudiantes_bp)
+            
     return app

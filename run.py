@@ -8,5 +8,5 @@ if __name__ == '__main__':
         db.create_all()
         print("Tablas creadas en la base de datos")
     # Ejecutar la aplicación Flask en modo de desarrollo
-    print("Iniciando la aplicación Fla}sk...")
+    print("Iniciando la aplicación Flask...")
     app.run(debug=True)
