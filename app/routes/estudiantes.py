@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from app.extensions import db
 from app.models.estudiante import Estudiante
 
-estudiantes_bp = Blueprint('estudiantes', __name__, url_prefix='/api/estudiantes')
+estudiantes_bp = Blueprint('estudiantes', __name__, url_prefix='/estudiantes')
 
 # =======================================================
 # CREATE: POST

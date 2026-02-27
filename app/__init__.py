@@ -4,6 +4,8 @@ from flask_cors import CORS
 from .config import DevelopmentConfig
 from .routes import main_bp
 from .routes.estudiantes import estudiantes_bp
+from .routes.materia import materia_bp
+from .routes.calificaciones import cal_bp
 from .extensions import db
 
 def create_app(config_class=DevelopmentConfig):
@@ -24,5 +26,7 @@ def create_app(config_class=DevelopmentConfig):
     # Importar y registrar los blueprints (rutas) de la aplicación
     app.register_blueprint(main_bp)
     app.register_blueprint(estudiantes_bp)
+    app.register_blueprint(materia_bp)
+    app.register_blueprint(cal_bp)
             
     return app

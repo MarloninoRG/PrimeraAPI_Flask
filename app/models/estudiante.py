@@ -20,6 +20,9 @@ class Estudiante(db.Model):
     fecha_registro = db.Column(db.DateTime, default=datetime.utcnow)  # Fecha de registro del estudiante
     activo = db.Column(db.Boolean, default=True)  # Indica si el estudiante está activo
     
+    # Relación: un estudiante tiene muchas calificaciones
+    calificaciones = db.relationship('Calificacion', back_populates='estudiante')
+    
     def to_dict(self):
         """
         Método para convertir el objeto Estudiante a un diccionario.
