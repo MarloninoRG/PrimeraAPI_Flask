@@ -19,6 +19,9 @@ class Config:
     # Mostrar las consultas SQL en la consola para depuración
     SQLALCHEMY_ECHO = True
     
+    # Configuración de JWT
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default_jwt_secret_key")
+    
 class DevelopmentConfig(Config):
     """Configuración específica para el entorno de desarrollo"""
     
