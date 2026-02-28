@@ -6,11 +6,48 @@ from datetime import timedelta
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    # Registrar un nuevo usuario
+    """
+    Registrar un nuevo usuario
+    ---
+    tags:
+      - Autenticación
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - username
+            - email
+            - password
+          properties:
+            username:
+              type: string
+              example: "juan123"
+            email:
+              type: string
+              example: "juan@gmail.com"
+            password:
+              type: string
+              example: "segura123"
+    responses:
+      201:
+        description: Usuario registrado exitosamente
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Usuario registrado exitosamente"
+      400:
+        description: Faltan campos requeridos o el usuario ya existe
+    """
     data = request.get_json()
-    
+
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
@@ -29,11 +66,46 @@ def register():
 
     return jsonify({'message': 'Usuario registrado exitosamente'}), 201
 
+
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    # Iniciar sesión y generar un token JWT
+    """
+    Iniciar sesión y obtener token JWT
+    ---
+    tags:
+      - Autenticación
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+              example: "juan123"
+            password:
+              type: string
+              example: "segura123"
+    responses:
+      200:
+        description: Login exitoso, retorna token JWT
+        schema:
+          type: object
+          properties:
+            access_token:
+              type: string
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      400:
+        description: Faltan campos requeridos
+      401:
+        description: Credenciales inválidas
+    """
     data = request.get_json()
-    
+
     username = data.get('username')
     password = data.get('password')
 
@@ -47,12 +119,49 @@ def login():
         return jsonify({'access_token': access_token}), 200
     else:
         return jsonify({'message': 'Credenciales inválidas'}), 401
-    
+
+
 @auth_bp.route('/profile', methods=['GET'])
-@jwt_required() # Este decorador asegura que el usuario esté autenticado para acceder a esta ruta
+@jwt_required()
 def profile():
-    # Obtener el perfil del usuario autenticado
-    user_id = get_jwt_identity() # Obtener el ID del usuario desde el token JWT
+    """
+    Obtener perfil del usuario autenticado
+    ---
+    tags:
+      - Autenticación
+    security:
+      - Bearer: []
+    parameters:
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        description: Token JWT en formato "Bearer <token>"
+        example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    responses:
+      200:
+        description: Perfil del usuario obtenido exitosamente
+        schema:
+          type: object
+          properties:
+            username:
+              type: string
+              example: "juan123"
+            email:
+              type: string
+              example: "juan@gmail.com"
+            role:
+              type: string
+              example: "user"
+            active:
+              type: boolean
+              example: true
+      401:
+        description: Token inválido o no proporcionado
+      404:
+        description: Usuario no encontrado
+    """
+    user_id = get_jwt_identity()
     user = Usuario.query.get(user_id)
 
     if user:
