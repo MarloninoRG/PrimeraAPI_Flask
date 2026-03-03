@@ -9,6 +9,8 @@ from .routes.auth import auth_bp
 from .routes.categorias import categorias_bp
 from .routes.productos import productos_bp
 from .routes.clientes import clientes_bp
+from .routes.ordenes import ordenes_bp
+from .routes.reportes import reportes_bp
 from .extensions import db, jwt
 from flasgger import Swagger
 
@@ -73,5 +75,7 @@ def create_app(config_class=DevelopmentConfig):
     app.register_blueprint(categorias_bp)
     app.register_blueprint(productos_bp)
     app.register_blueprint(clientes_bp)
+    app.register_blueprint(ordenes_bp)
+    app.register_blueprint(reportes_bp)
 
     return app

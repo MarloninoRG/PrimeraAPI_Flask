@@ -34,3 +34,19 @@ class ProductionConfig(Config):
     # Deshabilitar el modo de depuración
     DEBUG = False
     SQLALCHEMY_ECHO = False  # No mostrar consultas SQL en producción
+    
+# app/config.py  – Agregar esta clase al archivo existente
+
+class TestingConfig(Config):
+    """
+    Configuración exclusiva para pruebas.
+    Usa SQLite en memoria: ultra rapido y no requiere PostgreSQL.
+    """
+    TESTING = True
+    DEBUG = False
+    # SQLite en memoria: base de datos que vive solo durante las pruebas
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    # Desactivar CSRF para facilitar pruebas de formularios
+    WTF_CSRF_ENABLED = False
+    # JWT sin expiración en pruebas (evita problemas de tiempo)
+    JWT_ACCESS_TOKEN_EXPIRES = False
